@@ -23,3 +23,16 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("fillMandatoryFieldsAndSubmit", () => {
+  cy.get("#firstName").type("Lion");
+  cy.get("#lastName").type("Simon");
+  cy.get("#email").type("lion123@gmail.com");
+  cy.get("#open-text-area").type("Testando a aplicação.", { delay: 0 });
+  cy.get('button[type="submit"]').should("be.visible").click();
+  cy.get(".success > strong").should("be.visible");
+});
+
+Cypress.Commands.add("sendForm", () => {
+  cy.contains(".button", "Enviar", { matchCase: true }).click();
+});
