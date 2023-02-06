@@ -1,6 +1,7 @@
 /// <reference types="Cypress" />
 
 describe("Central de Atendimento ao Cliente TAT", () => {
+  const threeSecondInMS = 3000;
   beforeEach(() => {
     cy.visit("./src/index.html");
   });
@@ -10,21 +11,30 @@ describe("Central de Atendimento ao Cliente TAT", () => {
   });
 
   it("preenche os campos obrigatórios e envia o formulário", () => {
+    cy.clock();
+
     cy.get("#firstName").type("Lion");
     cy.get("#lastName").type("Simon");
     cy.get("#email").type("lion123@gmail.com");
     cy.get("#open-text-area").type("Testando a aplicação.", { delay: 0 });
     cy.sendForm();
     cy.get(".success > strong").should("be.visible");
+
+    cy.tick(threeSecondInMS);
+
+    cy.get(".success > strong").should("not.be.visible");
   });
 
   it("exibe mensagem de erro ao submeter o formulário com um email com formatação inválida", () => {
+    cy.clock();
     cy.get("#firstName").type("Lion");
     cy.get("#lastName").type("Simon");
     cy.get("#email").type("lion123@gmail,com");
     cy.get("#open-text-area").type("Testando a aplicação.", { delay: 0 });
     cy.sendForm();
     cy.get(".error > strong").should("be.visible");
+    cy.tick(threeSecondInMS);
+    cy.get(".error > strong").should("not.be.visible");
   });
 
   it("Validar campo telefone com valor não-numérico", () => {
