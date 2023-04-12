@@ -177,4 +177,8 @@ describe("Central de Atendimento ao Cliente TAT", () => {
       expect(body).to.include("CAC TAT");
     });
   });
+
+  it.only("encontra o gato escondido", () => {
+    cy.get("#cat").invoke("show").should("be.visible");
+  });
 });
